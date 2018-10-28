@@ -103,3 +103,24 @@ $('#modal-close-btn').click(function() {
 $('.modal-container').click(function() {
   $(this).fadeOut(300);
 });
+
+// Filtering employees by their name
+$('#search-input').keyup(function() {
+  // We target all elements that container employees' names,
+  const $cardNames = $('.card-name');
+  // iterate over each
+  $cardNames.each((index, cardName) => {
+    // to see if the name includes what we have just entered
+    if (cardName.textContent.includes($(this).val())) {
+      // and change display property of the whole card accordingly
+      cardName.parentNode.parentNode.style.display = '';
+    } else {
+      cardName.parentNode.parentNode.style.display = 'none';
+    }
+  });
+});
+
+// Disabling submit event of the submit button
+$('form').submit(function(event) {
+  event.preventDefault();
+});
