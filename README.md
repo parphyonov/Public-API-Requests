@@ -10,3 +10,6 @@ Firefox Quantum 62.0.3 (64-bit) ✅
 Safari Version 12.0 (13606.2.11) ✅
 
 Tor Browser 8.0.3 (based on Mozilla Firefox 60.3.0esr) (64-bit) ✅
+
+## Changes in Style
+**h1** element's font is changed
