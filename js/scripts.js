@@ -1,3 +1,6 @@
+// This variable is a helper for toggling employees in a modal window
+let currentIndex = 0;
+
 // This function takes an item in employees array and spits out validly formatted HTML code with the information about the employee
 const renderEmployee = employee => {
   const fullName = employee.name.first + ' ' + employee.name.last;
@@ -50,6 +53,33 @@ const renderModalContainer = $element => {
 
 };
 
+// Traversing to the previous .card
+const renderModalPrev = index => {
+  // if the previous index is -1 (out of limits)
+  if (currentIndex - 1 === -1) {
+    // we will render index 11
+    currentIndex = 11;
+    renderModalContainer($('.card').eq(currentIndex));
+  // otherwise we render the previous element and decrease current index
+  } else {
+    renderModalContainer($('.card').eq(currentIndex).prev());
+    currentIndex -= 1;
+  }
+};
+// Traversing to the next .card
+const renderModalNext = index => {
+  // if the next index is 12 (out of limits)
+  if (currentIndex + 1 === 12) {
+    // we will render index 0
+    currentIndex = 0;
+    renderModalContainer($('.card').eq(currentIndex));
+  } else {
+    // otherwise we render the next element and increase current index
+    renderModalContainer($('.card').eq(currentIndex).next());
+    currentIndex += 1;
+  }
+};
+
 // In index.html it was said that the modal window should be created dynamically
 const createModalAndAppendItToTheBody = () => {
   $('body').append(`<div class="modal-container">
@@ -65,6 +95,10 @@ const createModalAndAppendItToTheBody = () => {
               <p class="modal-text cap">123 Portland Ave., Portland, OR 97204</p>
               <p class="modal-text">Birthday: 10/21/2015</p>
           </div>
+      </div>
+      <div class="modal-btn-container">
+          <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
+          <button type="button" id="modal-next" class="modal-next btn">Next</button>
       </div>`);
 };
 
@@ -90,6 +124,7 @@ jQuery.ajax({
       renderModalContainer($(this));
       // And show this modal container
       $('.modal-container').fadeIn(300);
+      currentIndex = $('.card').index(this);
     });
   }
 });
@@ -99,10 +134,13 @@ $('#modal-close-btn').click(function() {
   $('.modal-container').fadeOut(300);
 });
 
-// The click event anywhere inside the modal container to hide it
-$('.modal-container').click(function() {
-  $(this).fadeOut(300);
+// The click event anywhere inside the modal div to hide the whole modal container
+$('.modal').click(function() {
+  $('.modal-container').fadeOut(300);
 });
+// Passing corresponding functions to the next and previous button clicks
+$('.modal-prev').click(renderModalPrev);
+$('.modal-next').click(renderModalNext);
 
 // Filtering employees by their name
 $('#search-input').keyup(function() {
